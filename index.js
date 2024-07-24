@@ -1,57 +1,60 @@
-import express, { json } from "express"; //import from the node express module
-import activities from "./activities.json" assert { type: "json" }; //import a json file from the activities.json
-import helmet from "helmet"; //importing helmet
-const app = express(); //assigning express to a variable
-const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
+import express, { json } from "express";
+import activities from "./activities.json" assert { type: "json" };
+import helmet from "helmet";
+import { v4 as uuidv4 } from "uuid";
+const app = express();
+const port = 3000;
 
 app.use(express.json());
 app.use(helmet());
-//app.disable("x-powered-by"); //disabling x-powered-by feature
 
 app.use(
   helmet({
-    xPoweredBy: false,  //ignoring x-powered-by header
+    xPoweredBy: false, //ignoring x-powered-by header
   })
 );
 
-console.log(activities);
+// console.log(activities);
 
 app.get("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .get
+  response.status(200).json({
+    success: true,
+    payload: "Welcome",
+  });
+});
+
+app.get("/activities", (request, response) => {
   response.status(200).json({
     success: true,
     payload: activities,
   });
 });
 
-app.post("/", (request, response) => {
-  //use app instead of express as variable is assigned with the method .post
+app.post("/activities", (request, response) => {
+  const activity = request.body;
+  if (!activity) {
+    response.status(400).json({
+      success: false,
+      payload: "please provide data",
+    });
+  }
 
-  // push our request.body inside our activities array
+  const data = {
+    id: uuidv4(),
+    activity_submitted: Date.now(),
+    activity_type: "something",
+    activity_duration: "30 min",
+  };
 
-  response.send("Post has been requested");
+  activities.push(data);
+
+  response.status(200).json({
+    success: true,
+    payload: activities,
+  });
 });
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`); //runs the server through your browser
 });
-
-//set a GET request with a user_id
-
-//response object always containing a key called data or error, ensure code is accurate represenation of failure or success and send back the response to the user
-
-//if the request succeeds, it will respond with the correct status code along with some User Acitivity Objects (Date, time, duration etc)
-
-
-// {
-//   data: [
-//   {
-//     "id": "54321234", // UUID
-// "activity_submitted": "1719486190058", // simple Epoc timestamp (Date.now() in JS)
-// "activity_type": "run", // choose some standard types
-// "activity_duration": "30", // choose standard unit type (minutes probably)
-//    }, // activity object (Date)
-//   { }, // activity object (Time)
-//   { }, // activity object
-//   ]
-//   }
