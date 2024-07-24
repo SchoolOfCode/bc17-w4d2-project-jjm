@@ -35,3 +35,23 @@ app.post("/", (request, response) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`); //runs the server through your browser
 });
+
+//set a GET request with a user_id
+
+//response object always containing a key called data or error, ensure code is accurate represenation of failure or success and send back the response to the user
+
+//if the request succeeds, it will respond with the correct status code along with some User Acitivity Objects (Date, time, duration etc)
+
+
+// {
+//   data: [
+//   {
+//     "id": "54321234", // UUID
+// "activity_submitted": "1719486190058", // simple Epoc timestamp (Date.now() in JS)
+// "activity_type": "run", // choose some standard types
+// "activity_duration": "30", // choose standard unit type (minutes probably)
+//    }, // activity object (Date)
+//   { }, // activity object (Time)
+//   { }, // activity object
+//   ]
+//   }
