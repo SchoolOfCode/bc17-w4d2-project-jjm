@@ -10,14 +10,11 @@ app.use(helmet());
 
 app.use(
   helmet({
-    xPoweredBy: false, //ignoring x-powered-by header
+    xPoweredBy: false,
   })
 );
 
-// console.log(activities);
-
 app.get("/", (request, response) => {
-  //use app instead of express as variable is assigned with the method .get
   response.status(200).json({
     success: true,
     payload: "Welcome",
@@ -56,5 +53,5 @@ app.post("/activities", (request, response) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`); //runs the server through your browser
+  console.log(`Server is running on http://localhost:${port}`);
 });
