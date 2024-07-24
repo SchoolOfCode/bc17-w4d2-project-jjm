@@ -24,6 +24,10 @@ app.get("/", (request, response) => {
   });
 });
 
+app.get("/activities", (request, response) => {
+console.log(request)  
+})
+
 app.post("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .post
 
