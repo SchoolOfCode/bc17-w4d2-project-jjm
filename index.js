@@ -6,7 +6,7 @@ const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
 
 app.use(express.json());
 app.use(helmet());
-app.disable("x-powered-by"); //disabling x-powered-by feature
+//app.disable("x-powered-by"); //disabling x-powered-by feature
 
 app.use(
   helmet({
