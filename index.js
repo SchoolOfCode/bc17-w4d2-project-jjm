@@ -14,6 +14,7 @@ app.use(
   })
 );
 
+// GET
 app.get("/", (request, response) => {
   response.status(200).json({
     success: true,
@@ -21,6 +22,7 @@ app.get("/", (request, response) => {
   });
 });
 
+// GET ACTIVITIES
 app.get("/activities", (request, response) => {
   response.status(200).json({
     success: true,
@@ -28,6 +30,7 @@ app.get("/activities", (request, response) => {
   });
 });
 
+// ADD(post) NEW ACTIVITY
 app.post("/activities", (request, response) => {
   const activity = request.body;
 
@@ -53,13 +56,15 @@ app.post("/activities", (request, response) => {
   });
 });
 
-app.put("/activities/:id/:data", (request, response) => {
+//UPDATE(put) ACTIVITY
+app.put("/activities/:id/", (request, response) => {
   // original activities
   console.log("activities:", activities);
   //request parameter
   console.log("request params", request.params);
+  console.log("request body", request.body);
   // parse parameter in json format and defragmentation.
-  const { activity_type, activity_duration } = JSON.parse(request.params.data);
+  const { activity_type, activity_duration } = request.body;
 
   console.log("data:", activity_type, activity_duration);
 
@@ -68,9 +73,14 @@ app.put("/activities/:id/:data", (request, response) => {
     (activity) => activity.id === request.params["id"]
   );
   console.log("index:", index);
+
   if (index === -1) {
-    response.send("provide a valid id");
+    response.status(400).json({
+      success: false,
+      payload: "please provide a valid id",
+    });
   }
+
   //provide the new activity
   const newActivity = {
     id: uuidv4(),
@@ -81,7 +91,40 @@ app.put("/activities/:id/:data", (request, response) => {
   console.log("newActivities:", newActivity);
   //update the activity
   activities[index] = newActivity;
-  response.send(activities);
+  // response.send(activities);
+  response.status(200).json({
+    success: true,
+    payload: activities,
+  });
+});
+
+//DELETE ACTIVITY
+app.delete("/activities/:id/", (request, response) => {
+  // original activities
+  console.log("activities:", activities);
+  //request parameter
+  console.log("request params", request.params);
+  // check parameter
+  const data = request.params;
+  //query the request index by id
+  const index = activities.findIndex(
+    (activity) => activity.id === request.params["id"]
+  );
+  console.log("index:", index);
+
+  if (index === -1) {
+    response.status(400).json({
+      success: false,
+      payload: "please provide a valid id",
+    });
+  }
+  activities.splice(index, 1);
+  //send back updated activity
+  // response.send(activities);
+  response.status(200).json({
+    success: true,
+    payload: activities,
+  });
 });
 
 app.listen(port, () => {
