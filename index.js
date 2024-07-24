@@ -1,14 +1,21 @@
-import express from "express"; //import from the node express modules
+import express, { json } from "express"; //import from the node express modules
+import activities from "./activities.json" assert { type: "json" }; //import a json file from the activities.json
 const app = express(); //assigning express to a variable
 const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
-app.get("/", (request, result) => {
+
+app.use(express.json());
+
+app.get("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .get
-  result.send("test is ok");
+  response.status(200).json({
+    succes: true,
+    payload: activities,
+  });
 });
 
-app.post("/", (request, result) => {
+app.post("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .post
-  result.send("Post has been requested");
+  response.send("Post has been requested");
 });
 
 app.listen(port, () => {
