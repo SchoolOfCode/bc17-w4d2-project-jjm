@@ -1,9 +1,11 @@
 import express, { json } from "express"; //import from the node express module
 import activities from "./activities.json" assert { type: "json" }; //import a json file from the activities.json
+import helmet from "helmet"; //importing helmet
 const app = express(); //assigning express to a variable
 const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
 
 app.use(express.json());
+  app.use(helmet());
 
 console.log(activities);
 
