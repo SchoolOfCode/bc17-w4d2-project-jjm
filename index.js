@@ -5,14 +5,21 @@ const app = express(); //assigning express to a variable
 const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
 
 app.use(express.json());
-  app.use(helmet());
+app.use(helmet());
+app.disable("x-powered-by"); //disabling x-powered-by feature
+
+app.use(
+  helmet({
+    xPoweredBy: false,  //ignoring x-powered-by header
+  })
+);
 
 console.log(activities);
 
 app.get("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .get
   response.status(200).json({
-    succes: true,
+    success: true,
     payload: activities,
   });
 });
