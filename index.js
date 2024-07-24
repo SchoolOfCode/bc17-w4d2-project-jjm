@@ -5,6 +5,8 @@ const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
 
 app.use(express.json());
 
+console.log(activities);
+
 app.get("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .get
   response.status(200).json({
@@ -15,6 +17,9 @@ app.get("/", (request, response) => {
 
 app.post("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .post
+
+  // push our request.body inside our activities array
+
   response.send("Post has been requested");
 });
 
