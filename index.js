@@ -57,13 +57,9 @@ app.post("/activities", (request, response) => {
   });
 });
 
-app.get("/hello", query("person").notEmpty().escape(), (req, res) => {
-  const result = validationResult(req);
-
-  res.send({ errors: result.array() });
-});
 //UPDATE(put) ACTIVITY
 //http://localhost:3000/activities?id=20
+
 app.put("/activities", query("id").notEmpty().escape(), (request, response) => {
   const result = validationResult(request);
 
@@ -91,33 +87,29 @@ app.put("/activities", query("id").notEmpty().escape(), (request, response) => {
 });
 
 //DELETE ACTIVITY
-app.delete("/activities/:id/", (request, response) => {
-  // original activities
-  console.log("activities:", activities);
-  //request parameter
-  console.log("request params", request.params);
-  // check parameter
-  const data = request.params;
-  //query the request index by id
-  const index = activities.findIndex(
-    (activity) => activity.id === request.params["id"]
-  );
-  console.log("index:", index);
+app.delete(
+  "/activities",
+  query("id").notEmpty().escape(),
+  (request, response) => {
+    const result = validationResult(request);
 
-  if (index === -1) {
-    response.status(400).json({
-      success: false,
-      payload: "please provide a valid id",
-    });
+    if (result.isEmpty()) {
+      const index = activities.findIndex(
+        (activity) => activity.id === request.params["id"]
+      );
+
+      activities.splice(index, 1);
+
+      return response.status(200).json({
+        success: true,
+        query: request.query.id,
+        payload: activities,
+      });
+    }
+
+    response.status(400).json({ errors: result.array() });
   }
-  activities.splice(index, 1);
-  //send back updated activity
-  // response.send(activities);
-  response.status(200).json({
-    success: true,
-    payload: activities,
-  });
-});
+);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
