@@ -1,6 +1,7 @@
 import express, { json } from "express"; //import from the node express module
 import activities from "./activities.json" assert { type: "json" }; //import a json file from the activities.json
 import helmet from "helmet"; //importing helmet
+import { v4 as uuidv4 } from 'uuid';
 const app = express(); //assigning express to a variable
 const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
 console.log(activities);
@@ -37,6 +38,20 @@ app.get("/activities", (request, response) => {
 
   // //If someone sends something, send the correct status code, if nothing was sent, return an error stating the code and what the issue is
 });
+
+app.post("/activities", (request, response) => {
+  const newActivity = req.body.newActivity;
+  if (!newActivity) {
+    response.status(400).json({
+      error: true,
+      data: null,
+    });
+  }
+  const activity = {
+    ...newActivity,
+    id: uui
+  }
+})
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`); //runs the server through your browser
