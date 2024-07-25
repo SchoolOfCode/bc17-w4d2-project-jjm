@@ -3,7 +3,7 @@ import activities from "./activities.json" assert { type: "json" }; //import a j
 import helmet from "helmet"; //importing helmet
 const app = express(); //assigning express to a variable
 const port = 3000; //port is the local host e.g. localhost://3000 (PortNumber)
-
+console.log(activities)
 app.use(express.json());
 app.use(helmet());
 //app.disable("x-powered-by"); //disabling x-powered-by feature
@@ -20,21 +20,21 @@ app.get("/", (request, response) => {
   //use app instead of express as variable is assigned with the method .get
   response.status(200).json({
     success: true,
-    payload: activities,
-  });
+    payload: "hello World",
+  })
 });
 
 app.get("/activities", (request, response) => {
-console.log(request)  
+  response.status(200).json({
+    success: true,
+    payload: activities,
+  })
+console.log(request)  //should show activity objects when accessed (ID, Date, Time etc) 
+
+//If there is an issue display error code representing the failure and why it happened
+
+//If someone sends something, send the correct status code, if nothing was sent, return an error stating the code and what the issue is
 })
-
-app.post("/", (request, response) => {
-  //use app instead of express as variable is assigned with the method .post
-
-  // push our request.body inside our activities array
-
-  response.send("Post has been requested");
-});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`); //runs the server through your browser
@@ -49,13 +49,11 @@ app.listen(port, () => {
 
 // {
 //   data: [
-//   {
-//     "id": "54321234", // UUID
-// "activity_submitted": "1719486190058", // simple Epoc timestamp (Date.now() in JS)
-// "activity_type": "run", // choose some standard types
-// "activity_duration": "30", // choose standard unit type (minutes probably)
-//    }, // activity object (Date)
-//   { }, // activity object (Time)
-//   { }, // activity object
+//     {
+//       "id": "54321234", // UUID
+//   "activity_submitted": "1719486190058", // simple Epoc timestamp (Date.now() in JS)
+//   "activity_type": "run", // choose some standard types
+//   "activity_duration": "30", // choose standard unit type (minutes probably)
+//      }, // activity object (Date)
 //   ]
 //   }
