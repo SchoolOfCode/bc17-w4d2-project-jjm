@@ -42,11 +42,12 @@ app.post("/activities", (request, response) => {
     });
   }
 
+  const { activity_type, activity_duration } = request.body;
   const newActivity = {
     id: uuidv4(),
     activity_submitted: Date.now(),
-    activity_type: "something",
-    activity_duration: "30 min",
+    activity_type,
+    activity_duration,
   };
 
   activities.push(newActivity);
@@ -65,7 +66,7 @@ app.put("/activities", query("id").notEmpty().escape(), (request, response) => {
 
   if (result.isEmpty()) {
     const index = activities.findIndex(
-      (activity) => activity.id === request.params["id"]
+      (activity) => activity.id === request.query.id
     );
 
     const { activity_type, activity_duration } = request.body;
@@ -76,6 +77,7 @@ app.put("/activities", query("id").notEmpty().escape(), (request, response) => {
       activity_duration,
     };
     activities[index] = newActivity;
+
     return response.status(200).json({
       success: true,
       query: request.query.id,
@@ -95,7 +97,7 @@ app.delete(
 
     if (result.isEmpty()) {
       const index = activities.findIndex(
-        (activity) => activity.id === request.params["id"]
+        (activity) => activity.id === request.query.id
       );
 
       activities.splice(index, 1);

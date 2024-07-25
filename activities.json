@@ -3,6 +3,12 @@
     "id": "20",
     "activity_submitted": 1721838205170,
     "activity_type": "code",
-    "activity_duration": "15 min"
+    "activity_duration": "20 min"
+  },
+  {
+    "id": "10",
+    "activity_submitted": 1721838205171,
+    "activity_type": "read",
+    "activity_duration": "10 min"
   }
 ]
