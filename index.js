@@ -3,9 +3,11 @@ import activities from "./activities.json" assert { type: "json" };
 import helmet from "helmet";
 import { query, validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
+
 const app = express();
 const port = 3000;
 
+// MIDdLEWERE
 app.use(express.json());
 app.use(helmet());
 
@@ -35,13 +37,14 @@ app.get("/activities", (request, response) => {
 app.post("/activities", (request, response) => {
   const activity = request.body;
 
+  // conditional statment
   if (!activity) {
     response.status(400).json({
       success: false,
       payload: "please provide data",
     });
   }
-
+  // build a new object
   const { activity_type, activity_duration } = request.body;
   const newActivity = {
     id: uuidv4(),
@@ -50,8 +53,10 @@ app.post("/activities", (request, response) => {
     activity_duration,
   };
 
+  // add the new activity
   activities.push(newActivity);
 
+  // response updated activities
   response.status(200).json({
     success: true,
     payload: activities,
@@ -62,13 +67,16 @@ app.post("/activities", (request, response) => {
 //http://localhost:3000/activities?id=20
 
 app.put("/activities", query("id").notEmpty().escape(), (request, response) => {
+  //implementing EXPRESS-VALIDATOR
   const result = validationResult(request);
 
+  // conditional statment using EXPRESS-VALIDATOR
   if (result.isEmpty()) {
     const index = activities.findIndex(
       (activity) => activity.id === request.query.id
     );
 
+    // build a new object
     const { activity_type, activity_duration } = request.body;
     const newActivity = {
       id: uuidv4(),
@@ -76,8 +84,11 @@ app.put("/activities", query("id").notEmpty().escape(), (request, response) => {
       activity_type,
       activity_duration,
     };
+
+    // update the activity
     activities[index] = newActivity;
 
+    // response updated activities
     return response.status(200).json({
       success: true,
       query: request.query.id,
@@ -93,22 +104,26 @@ app.delete(
   "/activities",
   query("id").notEmpty().escape(),
   (request, response) => {
+    //implementing EXPRESS-VALIDATOR
     const result = validationResult(request);
 
+    // conditional statment using EXPRESS-VALIDATOR
     if (result.isEmpty()) {
       const index = activities.findIndex(
         (activity) => activity.id === request.query.id
       );
 
+      // delete the activity
       activities.splice(index, 1);
 
+      // response updated activities
       return response.status(200).json({
         success: true,
         query: request.query.id,
         payload: activities,
       });
     }
-
+    //error response
     response.status(400).json({ errors: result.array() });
   }
 );
