@@ -36,9 +36,9 @@ app.get("/activities", (request, response) => {
 // ADD(post) NEW ACTIVITY
 app.post("/activities", (request, response) => {
   const activity = request.body;
-
+  console.log(activity);
   // conditional statment
-  if (!activity) {
+  if (!activity.body) {
     response.status(400).json({
       success: false,
       payload: "please provide data",
