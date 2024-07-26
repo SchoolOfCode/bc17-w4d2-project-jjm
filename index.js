@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 const app = express();
 const port = 3000;
 
-// MIDdLEWERE
+// MIDDLEWERE
 app.use(express.json());
 app.use(helmet());
 
@@ -128,6 +128,7 @@ app.delete(
   }
 );
 
+//Initialise the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
